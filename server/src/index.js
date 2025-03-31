@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 
 import { connectDB } from "./config/connectDB.js";
 import authRouter from "./routes/auth.route.js";
+import incomeRoutes from "./routes/income.route.js";
+import expenseRoutes from "./routes/expense.route.js";
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/income", incomeRoutes);
+app.use("/api/v1/expense", expenseRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
