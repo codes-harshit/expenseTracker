@@ -16,13 +16,13 @@
    ```
 2. Install dependencies:
    ```sh
-   cd backend && npm install
-   cd ../frontend && npm install
+   cd server && npm install
+   cd ../client && npm install
    ```
 3. Run the app:
    ```sh
-   cd backend && npm start
-   cd ../frontend && npm start
+   cd server && npm start
+   cd ../client && npm start
    ```
 
 ## License
