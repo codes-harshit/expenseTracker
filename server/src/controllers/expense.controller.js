@@ -1,4 +1,5 @@
 import { Expense } from "../models/expense.model.js";
+import xlsx from "xlsx";
 
 export const addExpense = async (req, res) => {
   const { category, amount, date, icon } = req.body;
@@ -76,4 +77,26 @@ export const deleteExpense = async (req, res) => {
   }
 };
 
-export const downloadExpenseExcel = async (req, res) => {};
+export const downloadExpenseExcel = async (req, res) => {
+  const userId = req.user_id;
+
+  try {
+    const expense = await Expense.find({ userId }).sort({ date: -1 });
+
+    const data = expense.map((item) => ({
+      category: item.category,
+      Amount: item.amount,
+      Date: item.date,
+    }));
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(data);
+    xlsx.utils.book_append_sheet(wb, ws, "expense");
+    xlsx.writeFile(wb, "expense_details.xlsx");
+    res.download("expense_details.xlsx");
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
