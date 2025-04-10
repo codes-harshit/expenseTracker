@@ -2,17 +2,31 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/layout/AuthLayout";
 import Input from "../../components/inputs/Input"
+import { validateEmail } from "../../utils/helper";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pasword, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-  }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (!pasword) {
+      setError("Please enter your password");
+      return;
+    }
+
+    setError("");
+
+    // Login API call
+  };
   return (
     <AuthLayout>
       <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center">
@@ -23,14 +37,14 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <Input
-           value={email}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             label="Email"
             placeholder="Enter your email"
             type="text"
           />
           <Input
-           value={pasword}
+            value={pasword}
             onChange={(e) => setPassword(e.target.value)}
             label="Password"
             placeholder="Enter your password"
@@ -39,10 +53,14 @@ const Login = () => {
 
           {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
-          <button type="submit" className="btn-primary">LOGIN</button>
-          <p className="text-[13px] text-slate-800 mt- 3">Don't have an account? {" "}
+          <button type="submit" className="btn-primary">
+            LOGIN
+          </button>
+
+          <p className="text-[13px] text-slate-800 mt- 3">
+            Don't have an account?{" "}
             <Link className="font-medium text-primary underline" to={"/signup"}>
-            Signup
+              Signup
             </Link>
           </p>
         </form>
