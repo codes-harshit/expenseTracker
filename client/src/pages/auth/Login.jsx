@@ -3,14 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/layout/AuthLayout";
 import Input from "../../components/inputs/Input"
 import { validateEmail } from "../../utils/helper";
+import { axiosInstance } from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [pasword, setPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -18,7 +20,7 @@ const Login = () => {
       return;
     }
 
-    if (!pasword) {
+    if (!password) {
       setError("Please enter your password");
       return;
     }
@@ -26,6 +28,17 @@ const Login = () => {
     setError("");
 
     // Login API call
+
+    try {
+      const res = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Error in login", error);
+    }
   };
   return (
     <AuthLayout>
@@ -44,7 +57,7 @@ const Login = () => {
             type="text"
           />
           <Input
-            value={pasword}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             label="Password"
             placeholder="Enter your password"

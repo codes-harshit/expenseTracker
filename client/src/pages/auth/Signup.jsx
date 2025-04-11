@@ -4,17 +4,19 @@ import AuthLayout from "../../components/layout/AuthLayout";
 import Input from "../../components/inputs/Input";
 import { validateEmail } from "../../utils/helper";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
+import { axiosInstance } from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
-  const [pasword, setPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [profilePic, setProfilePic] = useState(null);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     if (!fullName) {
       setError("Please enter your full name");
@@ -26,14 +28,24 @@ const Signup = () => {
       return;
     }
 
-    if (!pasword) {
+    if (!password) {
       setError("Please enter your password");
       return;
     }
 
     setError("");
 
-    // Login API call
+    // SIGNUP API call
+    try {
+      const res = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
+        email,
+        password,
+        fullName,
+        profilePic,
+      });
+    } catch (error) {
+      console.log("Error in signup", error);
+    }
   };
   return (
     <AuthLayout>
@@ -62,7 +74,7 @@ const Signup = () => {
             />
             <div className="col-span-2">
               <Input
-                value={pasword}
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 placeholder="Enter your password"
