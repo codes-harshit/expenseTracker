@@ -5,12 +5,14 @@ import Input from "../../components/inputs/Input"
 import { validateEmail } from "../../utils/helper";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { useUser } from "../../context/UserContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
+
+  const { login } = useUser();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,17 +30,9 @@ const Login = () => {
     setError("");
 
     // Login API call
-
-    try {
-      const res = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
-        email,
-        password,
-      });
-
-      navigate("/dashboard");
-    } catch (error) {
-      console.log("Error in login", error);
-    }
+    login(email, password);
+    // todo: handle error and success response
+    navigate("/dashboard");
   };
   return (
     <AuthLayout>

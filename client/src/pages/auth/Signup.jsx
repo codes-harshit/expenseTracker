@@ -6,6 +6,7 @@ import { validateEmail } from "../../utils/helper";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
 import { axiosInstance } from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
+import { useUser } from "../../context/UserContext";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +16,8 @@ const Signup = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+
+  const { signup } = useUser();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -36,16 +39,9 @@ const Signup = () => {
     setError("");
 
     // SIGNUP API call
-    try {
-      const res = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
-        email,
-        password,
-        fullName,
-        profilePic,
-      });
-    } catch (error) {
-      console.log("Error in signup", error);
-    }
+    signup(email, password, fullName, profilePic);
+    // todo: handle error and success response
+    navigate("/dashboard");
   };
   return (
     <AuthLayout>
