@@ -49,7 +49,13 @@ export const UserContextPpovider = ({ children }) => {
     }
   };
 
-  const logout = async () => {};
+  const logout = async () => {
+    try {
+      const res = await axiosInstance.post(API_PATHS.AUTH.LOGOUT);
+    } catch (error) {
+      console.log("Error in logout", error);
+    }
+  };
 
   const checkAuth = async () => {
     try {

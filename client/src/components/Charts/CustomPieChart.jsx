@@ -54,12 +54,10 @@ const CustomPieChart = ({
           textAnchor="middle"
           fill="#333"
           fontSize="24px"
-          font-weight="semi-bold"
+          fontWeight="semi-bold"
         >
           {totalAmount}
         </text>
-
-        
       </PieChart>
     </ResponsiveContainer>
   );
