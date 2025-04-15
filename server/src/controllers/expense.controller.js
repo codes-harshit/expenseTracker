@@ -78,7 +78,7 @@ export const deleteExpense = async (req, res) => {
 };
 
 export const downloadExpenseExcel = async (req, res) => {
-  const userId = req.user_id;
+  const userId = req.user._id;
 
   try {
     const expense = await Expense.find({ userId }).sort({ date: -1 });

@@ -1,4 +1,5 @@
 import { Income } from "../models/income.model.js";
+import xlsx from "xlsx";
 
 export const addIncome = async (req, res) => {
   const { source, amount, date, icon } = req.body;
@@ -77,7 +78,7 @@ export const deleteIncome = async (req, res) => {
 };
 
 export const downloadIncomeExcel = async (req, res) => {
-  const userId = req.user_id;
+  const userId = req.user._id;
 
   try {
     const income = await Income.find({ userId }).sort({ date: -1 });
